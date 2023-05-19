@@ -6,14 +6,20 @@ import jakarta.persistence.*;
 public class Article {
     @Id
     private String Id;
-
+    @Column(name = "title")
     private String title;
+    @Column(name = "category")
 
     private String category;
 
+    @Column(name = "image")
+
     private String image;
 
+    @Column(name = "description")
+
     private String description;
+    @Column(name = "url")
 
     private String url;
 
