@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 public class Article {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id;
 
     private String title;

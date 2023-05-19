@@ -3,8 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import com.mako.api.news.Article;
-import com.mako.api.news.ArticleRepository;
+
 @Service
 public class ArticleService {
 
@@ -17,18 +16,47 @@ public class ArticleService {
         return (List<Article>) articleRepository.findAll();
     }
 
-    public Article createArticle(Article b) {
-return articleRepository.save(b);
+    public Iterable<Article> saveAllArticles(Iterable<Article> articles) {
+        return articleRepository.saveAll(articles);
 
     }
 
+    public Article saveArticleById(String id, Iterable<Article> articles) {
+        for (Article article : articles) {
+            if (article.getId().equals(id)) {
+                return articleRepository.save(article);
+            }
+        }
+        return null;
+
+    }
+
+
+
+    public Iterable<Article> deleteAllArticles(Iterable<Article> articles) {
+        articleRepository.deleteAll(articles);
+        return articles;
+    }
+
+
+
     public Article findArticle(String id) {
         Optional<Article> optionalArticle = articleRepository.findById(id);
-        if(optionalArticle.isPresent()) {
-            return optionalArticle.get();
-        } else {
-            return null;
+        return optionalArticle.orElse(null);
+    }
+
+
+
+    // find all articles by category
+    public Iterable<Article> findArticlesByCategory(String category) {
+        Iterable<Article> articles = articleRepository.findAll();
+        List<Article> articlesByCategory = new ArrayList<>();
+        for (Article article : articles) {
+            if (article.getCategory().equals(category)) {
+                articlesByCategory.add(article);
+            }
         }
+        return articlesByCategory;
     }
 
     public Article updateArticle(String id, String title, String category, String image, String description, String url) {
@@ -46,14 +74,20 @@ return articleRepository.save(b);
         }
     }
 
-    public void deleteArticle(String id) {
+    public Article deleteArticleById(String id) {
         Optional<Article> optionalArticle = articleRepository.findById(id);
         if(optionalArticle.isPresent()) {
-            articleRepository.deleteById(id);
+            Article article = optionalArticle.get();
+            articleRepository.delete(article);
+            return article;
         } else {
-            return;
+            return null;
         }
+
+
     }
+
+
 
 
 
