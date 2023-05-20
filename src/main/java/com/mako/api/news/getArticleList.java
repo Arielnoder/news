@@ -29,6 +29,21 @@ public class getArticleList {
             String title = articleDoc.select("h1").text();
             String category = articleDoc.select(".here span").text();
             String image = articleDoc.select(".article-header figure img").attr("src");
+            if (image.equals("")) {
+                image = articleDoc.select("body > figure img").attr("data-src");
+
+            }
+            if (image.equals("")) {
+                image = articleDoc.select("p:nth-of-type(3) img").attr("src");
+
+            }
+              if (image.equals("")) {
+                    // image = no image found
+                    // search for next image it can find
+                    image = articleDoc.select("img").attr("src");
+                }
+
+
             String description = articleDoc.select("h2").text();
             String url = ("https://www.mako.co.il/" + articleElement.attr("href"));
             CreateArticleInput createArticleInput = new CreateArticleInput(articleId, title, category, image, description, url);
