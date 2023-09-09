@@ -17,7 +17,13 @@ public class ArticleService {
     }
 
     public Iterable<Article> saveAllArticles(Iterable<Article> articles) {
+        for (Article article : articles) {
+            if (article.getDescription().length() > 250) {
+                article.setDescription(article.getDescription().substring(0, 250));
+            }
+        }
         return articleRepository.saveAll(articles);
+
 
     }
 
